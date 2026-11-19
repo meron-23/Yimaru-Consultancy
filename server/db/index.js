@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createClient } from '@supabase/supabase-js';
+import { syncLeadToYimaruCrm } from '../crm/yimaruCrmSync.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -563,6 +564,17 @@ export const db = {
       } catch (err) {
         console.error('[DB] Supabase saveLead failed:', err.message);
       }
+    }
+
+    // Automatically synchronize new lead to Yimaru CRM
+    try {
+      const crmRes = await syncLeadToYimaruCrm(lead);
+      if (crmRes && crmRes.success && crmRes.caseId) {
+        lead.crm_case_id = crmRes.caseId;
+        saveLocalStore(store);
+      }
+    } catch (crmErr) {
+      console.warn('[CRM-SYNC] Automatic sync failed:', crmErr.message);
     }
 
     return lead;

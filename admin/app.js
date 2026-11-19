@@ -1229,6 +1229,9 @@ function renderLeadsTable() {
     const date = new Date(l.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
     const ctrys = (l.countries || []).map(f => FLAGS[f] || f).join(' ') || 'Not specified';
     const contact = l.phone || l.email || 'N/A';
+    const crmChip = l.crm_case_id 
+      ? `<span class="badge badge-success" style="font-family:monospace;font-size:11px;letter-spacing:.5px;">${esc(l.crm_case_id)}</span>` 
+      : `<button class="btn btn-sm btn-outline" style="font-size:10px;padding:2px 6px;" onclick="syncLeadToCrm('${esc(l.id)}')">Sync to CRM</button>`;
 
     return `
       <tr>
@@ -1237,7 +1240,7 @@ function renderLeadsTable() {
         <td>${esc(contact)} <span class="badge badge-subtle">${esc(l.pref || 'phone')}</span></td>
         <td>${esc(l.level || 'Undergrad')} / ${esc(l.field || 'General')}</td>
         <td>${ctrys}</td>
-        <td><span class="badge badge-subtle">${esc(l.language || 'en')}</span></td>
+        <td>${crmChip}</td>
         <td>${esc(l.source || 'website')}</td>
         <td>
           <button class="btn btn-sm btn-secondary" onclick="viewLeadDetails('${esc(l.id)}')">View</button>
@@ -1337,7 +1340,17 @@ window.viewLeadDetails = function(leadId) {
       <!-- Contact Card -->
       <div style="background:var(--bg-muted);padding:18px 20px;border-radius:var(--radius-md);border-left:4px solid #9A288D;">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:12px;">
-          <h4 style="margin:0;font-size:17px;">${esc(lead.name || 'Anonymous Student')}</h4>
+          <div>
+            <h4 style="margin:0 0 4px 0;font-size:17px;">${esc(lead.name || 'Anonymous Student')}</h4>
+            <div style="display:flex;align-items:center;gap:6px;">
+              ${lead.crm_case_id 
+                ? `<span class="badge badge-success" style="font-family:monospace;font-size:11px;">CRM Case: ${esc(lead.crm_case_id)}</span>`
+                : `<span class="badge badge-subtle" style="font-size:11px;">Not in CRM</span>`}
+              <button class="btn btn-sm btn-outline" style="font-size:11px;padding:2px 8px;" onclick="syncLeadToCrm('${esc(lead.id)}')">
+                ${lead.crm_case_id ? 'Re-sync to CRM' : 'Sync to Yimaru CRM'}
+              </button>
+            </div>
+          </div>
           <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
             <span style="background:${prefColor};color:#fff;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">${esc(lead.pref || 'phone')}</span>
           </div>
@@ -1422,6 +1435,31 @@ window.viewLeadDetails = function(leadId) {
   `;
 
   modal.style.display = 'flex';
+};
+
+window.syncLeadToCrm = async function(leadId) {
+  try {
+    showToast('Syncing lead to Yimaru CRM...', 'info');
+    const res = await apiRequest(`/leads/${encodeURIComponent(leadId)}/sync-crm`, {
+      method: 'POST'
+    });
+    showToast(`✓ Case created in Yimaru CRM: ${res.caseId}`, 'success');
+
+    // Update in-memory state
+    const lead = state.leads.find(l => l.id === leadId);
+    if (lead) {
+      lead.crm_case_id = res.caseId;
+    }
+    renderLeadsTable();
+
+    // If modal is open for this lead, update modal
+    const modal = document.getElementById('lead-modal');
+    if (modal && modal.style.display === 'flex') {
+      viewLeadDetails(leadId);
+    }
+  } catch (err) {
+    showToast(`Failed to sync to Yimaru CRM: ${err.message}`, 'error');
+  }
 };
 
 // ==============================================================================

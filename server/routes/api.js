@@ -513,6 +513,32 @@ router.get('/leads', requireAuth, async (req, res) => {
   }
 });
 
+/**
+ * Manually synchronize an existing lead to Yimaru CRM
+ */
+router.post('/leads/:id/sync-crm', requireAuth, async (req, res) => {
+  try {
+    const leadId = req.params.id;
+    const leads = await db.getLeads({});
+    const lead = leads.find(l => l.id === leadId);
+    if (!lead) {
+      return res.status(404).json({ error: 'Lead not found' });
+    }
+
+    const { syncLeadToYimaruCrm } = await import('../crm/yimaruCrmSync.js');
+    const syncRes = await syncLeadToYimaruCrm(lead);
+
+    if (syncRes.success) {
+      lead.crm_case_id = syncRes.caseId;
+      res.json({ success: true, caseId: syncRes.caseId, message: `Synced to Yimaru CRM as case ${syncRes.caseId}` });
+    } else {
+      res.status(502).json({ error: syncRes.error || 'Failed to sync to Yimaru CRM' });
+    }
+  } catch (err) {
+    res.status(500).json({ error: 'Sync failed: ' + err.message });
+  }
+});
+
 // ==============================================================================
 // 8. SITE CONTENT (FAQS, CONTACT SETTINGS)
 // ==============================================================================
