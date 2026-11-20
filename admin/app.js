@@ -1440,7 +1440,7 @@ window.viewLeadDetails = function(leadId) {
 window.syncLeadToCrm = async function(leadId) {
   try {
     showToast('Syncing lead to Yimaru CRM...', 'info');
-    const res = await apiRequest(`/leads/${encodeURIComponent(leadId)}/sync-crm`, {
+    const res = await api(`/api/leads/${encodeURIComponent(leadId)}/sync-crm`, {
       method: 'POST'
     });
     showToast(`✓ Case created in Yimaru CRM: ${res.caseId}`, 'success');
