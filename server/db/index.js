@@ -761,9 +761,17 @@ export const db = {
 
     if (supabase) {
       try {
-        await supabase.from('chat_logs').insert(record);
+        const { id: _ignore, ...supabasePayload } = record;
+        const { data, error } = await supabase.from('chat_logs').insert(supabasePayload).select().single();
+        if (error) {
+          console.error('[DB] Supabase saveChatLog error:', error.message);
+        } else if (data) {
+          record.id = data.id;
+          store.chat_logs[0] = record;
+          saveLocalStore(store);
+        }
       } catch (err) {
-        // Quiet fallback
+        console.error('[DB] Supabase saveChatLog unexpected error:', err.message);
       }
     }
     return record;
@@ -862,9 +870,17 @@ export const db = {
 
     if (supabase) {
       try {
-        await supabase.from('ai_notes').insert(note);
+        const { id: _ignore, ...supabasePayload } = note;
+        const { data, error } = await supabase.from('ai_notes').insert(supabasePayload).select().single();
+        if (error) {
+          console.error('[DB] Supabase saveAiNote error:', error.message);
+        } else if (data) {
+          note.id = data.id;
+          store.ai_notes[store.ai_notes.length - 1] = note;
+          saveLocalStore(store);
+        }
       } catch (err) {
-        // Quiet fallback
+        console.error('[DB] Supabase saveAiNote unexpected error:', err.message);
       }
     }
     return note;
