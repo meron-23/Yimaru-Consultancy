@@ -9,6 +9,11 @@ import {
   processWithAI,
   regenerateTranslation
 } from '../ai/index.js';
+import {
+  handleChatRequest,
+  handleExtractRequest,
+  getKnowledgeText
+} from '../ai/chatEngine.js';
 
 const router = express.Router();
 
@@ -559,6 +564,136 @@ router.put('/site-content/:key', requireAuth, async (req, res) => {
     res.json({ success: true, item: updated });
   } catch (err) {
     res.status(400).json({ error: 'Failed to update site content: ' + err.message });
+  }
+});
+
+// ==============================================================================
+// 9. AI CHAT ASSISTANT & KNOWLEDGE
+// ==============================================================================
+
+/**
+ * Public AI Chat endpoint
+ */
+router.post('/chat', async (req, res) => {
+  try {
+    const { lang, messages, profile, session, page } = req.body || {};
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
+    const result = await handleChatRequest({
+      ip,
+      lang,
+      messages,
+      profile,
+      session,
+      page
+    });
+
+    if (result.error === 'busy') {
+      return res.status(429).json({ error: 'busy' });
+    }
+    if (result.error) {
+      return res.status(result.status || 500).json({ error: result.error });
+    }
+    res.json({ reply: result.reply });
+  } catch (err) {
+    res.status(500).json({ error: 'Chat service error: ' + err.message });
+  }
+});
+
+/**
+ * AI Content Studio extraction endpoint (admin only)
+ */
+router.post('/extract', requireAuth, async (req, res) => {
+  try {
+    const { mode, text, url } = req.body || {};
+    const result = await handleExtractRequest({ mode, text, url });
+    res.json({ success: true, result });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+/**
+ * Live knowledge preview: "What the AI reads" (admin only)
+ */
+router.get('/chat/knowledge-preview', requireAuth, async (req, res) => {
+  try {
+    const text = await getKnowledgeText(true);
+    res.json({ knowledge: text, length: text.length });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * Chat conversation logs (admin only)
+ */
+router.get('/chat/logs', requireAuth, async (req, res) => {
+  try {
+    const { lang, session, flagged, reviewed, limit, offset } = req.query;
+    const logs = await db.getChatLogs({
+      lang,
+      session,
+      flagged: flagged !== undefined ? flagged === 'true' : undefined,
+      reviewed: reviewed !== undefined ? reviewed === 'true' : undefined,
+      limit: limit ? parseInt(limit, 10) : 100,
+      offset: offset ? parseInt(offset, 10) : 0
+    });
+    res.json({ logs });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.put('/chat/logs/:id', requireAuth, async (req, res) => {
+  try {
+    const updated = await db.updateChatLog(req.params.id, req.body);
+    res.json({ success: true, log: updated });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// ==============================================================================
+// 10. AI KNOWLEDGE NOTES
+// ==============================================================================
+
+router.get('/ai/notes', requireAuth, async (req, res) => {
+  try {
+    const notes = await db.getAiNotes({ activeOnly: req.query.activeOnly === 'true' });
+    res.json({ notes });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.post('/ai/notes', requireAuth, async (req, res) => {
+  try {
+    const { title, body, active, source } = req.body || {};
+    if (!title || !body) {
+      return res.status(400).json({ error: 'Title and body are required' });
+    }
+    const note = await db.saveAiNote({ title, body, active, source });
+    res.status(201).json({ success: true, note });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+router.put('/ai/notes/:id', requireAuth, async (req, res) => {
+  try {
+    const updated = await db.updateAiNote(req.params.id, req.body);
+    res.json({ success: true, note: updated });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+router.delete('/ai/notes/:id', requireAuth, async (req, res) => {
+  try {
+    await db.deleteAiNote(req.params.id);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 });
 

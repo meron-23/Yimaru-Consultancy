@@ -15,6 +15,9 @@ const state = {
   countries: [],
   scholarships: [],
   leads: [],
+  chatLogs: [],
+  aiNotes: [],
+  asstSubtab: 'chats',
   stats: null,
   config: null
 };
@@ -248,6 +251,42 @@ function initEventListeners() {
   document.getElementById('lead-modal-close').addEventListener('click', () => {
     document.getElementById('lead-modal').style.display = 'none';
   });
+
+  // AI Assistant Subtab buttons
+  document.querySelectorAll('.subtab-btn[data-asst-tab]').forEach(btn => {
+    btn.addEventListener('click', () => switchAsstSubtab(btn.dataset.asstTab));
+  });
+
+  // Assistant filters
+  document.getElementById('asst-lang-filter')?.addEventListener('change', renderChatLogsTable);
+  document.getElementById('asst-flagged-filter')?.addEventListener('change', renderChatLogsTable);
+
+  // Feed AI Form submit
+  document.getElementById('feed-ai-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const title = document.getElementById('feed-note-title').value.trim();
+    const body = document.getElementById('feed-note-body').value.trim();
+    const source = document.getElementById('feed-note-source').value.trim();
+
+    if (!title || !body) {
+      showToast('Title and body are required', 'error');
+      return;
+    }
+
+    try {
+      const res = await api('/api/ai/notes', {
+        method: 'POST',
+        body: JSON.stringify({ title, body, source })
+      });
+      state.aiNotes.push(res.note);
+      showToast('✓ Knowledge note saved and absorbed by AI', 'success');
+      document.getElementById('feed-ai-form').reset();
+      switchAsstSubtab('notes');
+      renderAiNotesTable();
+    } catch (err) {
+      showToast('Failed to save knowledge note: ' + err.message, 'error');
+    }
+  });
 }
 
 function handleSelectedFile(file) {
@@ -275,6 +314,7 @@ function switchTab(tabId) {
     'countries': ['Study Destinations', 'Manage destination country guides and student visa facts'],
     'scholarships': ['Scholarships & Funding', 'Manage scholarships, eligibility criteria, and open deadlines'],
     'leads': ['Student Assessment Leads', 'Student qualification submissions from the website checker'],
+    'assistant': ['AI Chat Assistant', 'Knowledge base, student conversations, and live grounding preview'],
     'settings': ['System & Configuration', 'Database status, AI engine health, and portal settings']
   };
 
@@ -286,6 +326,7 @@ function switchTab(tabId) {
   if (tabId === 'countries') loadCountries();
   if (tabId === 'scholarships') loadScholarships();
   if (tabId === 'leads') loadLeads();
+  if (tabId === 'assistant') loadAssistantData();
   if (tabId === 'settings') checkSystemConfig();
 }
 
@@ -315,6 +356,48 @@ async function loadDashboard() {
     // Sidebar badges
     document.getElementById('nav-count-countries').textContent = stats.countries.total;
     document.getElementById('nav-count-scholarships').textContent = stats.scholarships.total;
+    document.getElementById('nav-count-leads').textContent = stats.leads.total;
+    const chatBadge = document.getElementById('nav-count-chat');
+    if (chatBadge && stats.chat) {
+      chatBadge.textContent = stats.chat.total;
+    }
+
+    // Update Needs Attention Panel
+    const unsyncedCount = stats.leads.unsynced || 0;
+    const flaggedCount = stats.chat ? stats.chat.flagged : 0;
+    const draftsCount = (stats.countries.draft || 0) + (stats.scholarships.draft || 0);
+
+    const unsyncedEl = document.getElementById('dash-unsynced-leads-txt');
+    if (unsyncedEl) {
+      unsyncedEl.textContent = unsyncedCount > 0 ? `${unsyncedCount} leads pending sync to Yimaru CRM` : 'All leads synced to CRM';
+      unsyncedEl.className = unsyncedCount > 0 ? 'text-warning' : 'text-success';
+    }
+
+    const flaggedEl = document.getElementById('dash-flagged-chat-txt');
+    if (flaggedEl) {
+      flaggedEl.textContent = flaggedCount > 0 ? `${flaggedCount} flagged answers need review` : 'No flagged replies';
+      flaggedEl.className = flaggedCount > 0 ? 'text-warning' : 'text-success';
+    }
+
+    const draftsEl = document.getElementById('dash-drafts-txt');
+    if (draftsEl) {
+      draftsEl.textContent = draftsCount > 0 ? `${draftsCount} drafts ready for review` : 'No pending drafts';
+      draftsEl.className = draftsCount > 0 ? 'text-warning' : 'text-success';
+    }
+
+    const badgeEl = document.getElementById('dash-attention-badge');
+    if (badgeEl) {
+      const totalAttention = unsyncedCount + flaggedCount + draftsCount;
+      if (totalAttention > 0) {
+        badgeEl.textContent = `${totalAttention} items`;
+        badgeEl.style.background = '#fef3c7';
+        badgeEl.style.color = '#b45309';
+      } else {
+        badgeEl.textContent = 'All clear';
+        badgeEl.style.background = '#dcfce7';
+        badgeEl.style.color = '#15803d';
+      }
+    }
     document.getElementById('nav-count-leads').textContent = stats.leads.total;
 
     // Database pill
@@ -1503,4 +1586,251 @@ function showToast(message, type = 'info') {
     setTimeout(() => toast.remove(), 200);
   }, 4000);
 }
+
+// ==============================================================================
+// 10. AI CHAT ASSISTANT
+// ==============================================================================
+
+async function loadAssistantData() {
+  try {
+    const [logsRes, notesRes] = await Promise.all([
+      api('/api/chat/logs?limit=200'),
+      api('/api/ai/notes')
+    ]);
+
+    state.chatLogs = logsRes.logs || [];
+    state.aiNotes = notesRes.notes || [];
+
+    // Update KPI counters
+    const totalLogs = state.chatLogs.length;
+    const handoffLogs = state.chatLogs.filter(l => l.handoff).length;
+    const flaggedLogs = state.chatLogs.filter(l => l.flagged && !l.reviewed).length;
+    const activeNotes = state.aiNotes.filter(n => n.active).length;
+
+    const totalEl = document.getElementById('asst-stat-total');
+    if (totalEl) totalEl.textContent = totalLogs;
+
+    const handoffEl = document.getElementById('asst-stat-handoff');
+    if (handoffEl) handoffEl.textContent = handoffLogs;
+
+    const flaggedEl = document.getElementById('asst-stat-flagged');
+    if (flaggedEl) flaggedEl.textContent = flaggedLogs;
+
+    const flaggedSub = document.getElementById('asst-stat-flagged-sub');
+    if (flaggedSub) {
+      flaggedSub.textContent = flaggedLogs > 0 ? `${flaggedLogs} needs review` : 'All answers verified';
+      flaggedSub.className = flaggedLogs > 0 ? 'text-warning' : 'text-success';
+    }
+
+    const notesEl = document.getElementById('asst-stat-notes');
+    if (notesEl) notesEl.textContent = `${activeNotes} / ${state.aiNotes.length}`;
+
+    // Language breakdown text
+    const langCounts = {};
+    state.chatLogs.forEach(l => {
+      langCounts[l.lang] = (langCounts[l.lang] || 0) + 1;
+    });
+    const langTxt = Object.entries(langCounts).map(([k, v]) => `${k.toUpperCase()}: ${v}`).join(' · ');
+    const langEl = document.getElementById('asst-stat-langs');
+    if (langEl) langEl.textContent = langTxt || 'All languages';
+
+    renderChatLogsTable();
+    renderAiNotesTable();
+  } catch (err) {
+    showToast('Failed to load AI assistant data: ' + err.message, 'error');
+  }
+}
+
+function switchAsstSubtab(subtabId) {
+  state.asstSubtab = subtabId;
+  document.querySelectorAll('.subtab-btn[data-asst-tab]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.asstTab === subtabId);
+  });
+  document.querySelectorAll('.asst-subtab-content').forEach(pane => {
+    pane.style.display = 'none';
+  });
+  const targetPane = document.getElementById('asst-subtab-' + subtabId);
+  if (targetPane) targetPane.style.display = 'block';
+
+  if (subtabId === 'reads') {
+    loadKnowledgePreview();
+  }
+}
+
+window.showFeedAiTab = function() {
+  switchAsstSubtab('feed');
+};
+
+window.resetFeedAiForm = function() {
+  const form = document.getElementById('feed-ai-form');
+  if (form) form.reset();
+};
+
+function renderChatLogsTable() {
+  const tbody = document.getElementById('chat-logs-tbody');
+  if (!tbody) return;
+
+  const langFilter = document.getElementById('asst-lang-filter')?.value || 'all';
+  const flaggedOnly = Boolean(document.getElementById('asst-flagged-filter')?.checked);
+
+  let logs = [...state.chatLogs];
+  if (langFilter !== 'all') {
+    logs = logs.filter(l => l.lang === langFilter);
+  }
+  if (flaggedOnly) {
+    logs = logs.filter(l => l.flagged);
+  }
+
+  if (logs.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-20 text-muted">No student conversations found matching filter criteria.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = logs.map(l => {
+    const dateStr = new Date(l.created_at).toLocaleString();
+    const isHandoff = l.handoff ? `<span class="badge" style="background:#e0f2fe; color:#0369a1; font-size:11px; margin-left:4px;">Telegram</span>` : '';
+    const statusBadge = l.status === 'ok'
+      ? `<span class="badge badge-published">OK</span>`
+      : (l.status === 'busy' ? `<span class="badge badge-draft">Busy</span>` : `<span class="badge badge-archived">Error</span>`);
+
+    const flagBadge = l.flagged ? `<span class="badge" style="background:#fee2e2; color:#b91c1c; font-size:11px; margin-right:4px;">Flagged</span>` : '';
+
+    return `
+      <tr>
+        <td>
+          <div style="font-weight:600; font-size:12px;">${esc(dateStr)}</div>
+          <div style="font-size:11px; color:#64748b;">${esc(l.session)}</div>
+        </td>
+        <td><span class="badge" style="text-transform:uppercase; font-size:11px;">${esc(l.lang)}</span></td>
+        <td>
+          <div style="max-width:240px; font-weight:500; font-size:13px; line-height:1.4;">${esc(l.question)}</div>
+        </td>
+        <td>
+          <div style="max-width:320px; font-size:12px; color:#334155; line-height:1.4; max-height:80px; overflow-y:auto;">${esc(l.answer)}</div>
+        </td>
+        <td>
+          <div>${statusBadge}${isHandoff}</div>
+          <div style="margin-top:4px;">${flagBadge}</div>
+        </td>
+        <td style="text-align:right;">
+          <button class="btn btn-secondary" style="padding:4px 8px; font-size:12px; margin-bottom:4px;" onclick="toggleFlagChatLog(${l.id}, ${Boolean(l.flagged)})">
+            ${l.flagged ? 'Unflag' : 'Flag'}
+          </button>
+          ${!l.reviewed ? `
+            <button class="btn btn-secondary" style="padding:4px 8px; font-size:12px;" onclick="markReviewedChatLog(${l.id})">
+              Review
+            </button>
+          ` : '<span class="text-success" style="font-size:11px;">Reviewed</span>'}
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+window.toggleFlagChatLog = async function(id, currentFlagged) {
+  try {
+    const res = await api(`/api/chat/logs/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ flagged: !currentFlagged })
+    });
+    const idx = state.chatLogs.findIndex(l => l.id === id);
+    if (idx !== -1) state.chatLogs[idx] = res.log;
+    showToast(!currentFlagged ? 'Chat reply marked as flagged' : 'Chat reply unflagged', 'info');
+    renderChatLogsTable();
+  } catch (err) {
+    showToast('Failed to update chat log: ' + err.message, 'error');
+  }
+};
+
+window.markReviewedChatLog = async function(id) {
+  try {
+    const res = await api(`/api/chat/logs/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ reviewed: true })
+    });
+    const idx = state.chatLogs.findIndex(l => l.id === id);
+    if (idx !== -1) state.chatLogs[idx] = res.log;
+    showToast('Marked as reviewed', 'success');
+    renderChatLogsTable();
+  } catch (err) {
+    showToast('Failed to update chat log: ' + err.message, 'error');
+  }
+};
+
+function renderAiNotesTable() {
+  const tbody = document.getElementById('ai-notes-tbody');
+  if (!tbody) return;
+
+  if (state.aiNotes.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" class="text-center py-20 text-muted">No knowledge notes found. Click '+ Add Note' to create one.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = state.aiNotes.map(n => {
+    return `
+      <tr>
+        <td><strong>${esc(n.title)}</strong></td>
+        <td>
+          <div style="max-width:340px; font-size:12px; color:#475569; max-height:60px; overflow-y:auto; line-height:1.4;">
+            ${esc(n.body)}
+          </div>
+        </td>
+        <td><span style="font-size:12px; color:#64748b;">${esc(n.source || 'Advisor')}</span></td>
+        <td>
+          <label style="display:inline-flex; align-items:center; cursor:pointer;">
+            <input type="checkbox" ${n.active ? 'checked' : ''} onchange="toggleAiNoteActive(${n.id}, this.checked)">
+            <span style="font-size:12px; margin-left:6px; font-weight:600; color:${n.active ? '#15803d' : '#94a3b8'};">
+              ${n.active ? 'Active' : 'Off'}
+            </span>
+          </label>
+        </td>
+        <td style="text-align:right;">
+          <button class="btn btn-secondary" style="padding:4px 8px; font-size:12px; color:#dc2626;" onclick="deleteAiNote(${n.id})">
+            Delete
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+window.toggleAiNoteActive = async function(id, active) {
+  try {
+    const res = await api(`/api/ai/notes/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ active })
+    });
+    const idx = state.aiNotes.findIndex(n => n.id === id);
+    if (idx !== -1) state.aiNotes[idx] = res.note;
+    showToast(active ? 'Note activated (absorbed by AI)' : 'Note deactivated', 'success');
+    renderAiNotesTable();
+  } catch (err) {
+    showToast('Failed to toggle note: ' + err.message, 'error');
+  }
+};
+
+window.deleteAiNote = async function(id) {
+  if (!confirm('Are you sure you want to delete this knowledge note?')) return;
+  try {
+    await api(`/api/ai/notes/${id}`, { method: 'DELETE' });
+    state.aiNotes = state.aiNotes.filter(n => n.id !== id);
+    showToast('Knowledge note deleted', 'info');
+    renderAiNotesTable();
+  } catch (err) {
+    showToast('Failed to delete note: ' + err.message, 'error');
+  }
+};
+
+window.loadKnowledgePreview = async function() {
+  const previewEl = document.getElementById('asst-knowledge-preview');
+  if (!previewEl) return;
+  previewEl.textContent = 'Fetching compiled live knowledge...';
+
+  try {
+    const res = await api('/api/chat/knowledge-preview');
+    previewEl.textContent = res.knowledge || 'No knowledge text assembled.';
+  } catch (err) {
+    previewEl.textContent = 'Failed to load preview: ' + err.message;
+  }
+};
 

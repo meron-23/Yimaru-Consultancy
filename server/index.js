@@ -1,12 +1,9 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import dotenv from 'dotenv';
 import apiRouter from './routes/api.js';
-
-// Load environment variables from .env if present
-dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -73,7 +70,10 @@ app.use((err, req, res, next) => {
 
 // Start server unless running in test mode
 let serverInstance = null;
-const isTestMode = process.env.NODE_ENV === 'test' || process.argv[1]?.includes('test');
+const isTestMode = process.env.NODE_ENV === 'test' || 
+                   process.env.IS_TEST || 
+                   process.argv[1]?.includes('test') ||
+                   process.argv.some(arg => arg.includes('test'));
 if (!isTestMode) {
   serverInstance = app.listen(PORT, () => {
     console.log(`

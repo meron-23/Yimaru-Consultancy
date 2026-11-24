@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -22,7 +23,9 @@ let supabase = null;
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
 
-if (supabaseUrl && supabaseKey) {
+const isTestMode = Boolean(process.argv[1]?.includes('test') || process.env.IS_TEST);
+
+if (supabaseUrl && supabaseKey && !isTestMode) {
   try {
     supabase = createClient(supabaseUrl, supabaseKey, {
       auth: { persistSession: false }
@@ -31,6 +34,8 @@ if (supabaseUrl && supabaseKey) {
   } catch (err) {
     console.error('[DB] Failed to initialize Supabase client:', err.message);
   }
+} else if (isTestMode) {
+  console.log('[DB] Operating in isolated test store mode.');
 } else {
   console.log('[DB] No Supabase credentials configured. Operating in high-fidelity local persistent store mode.');
 }
@@ -42,6 +47,8 @@ function loadLocalStore() {
   if (fs.existsSync(STORE_PATH)) {
     try {
       const data = JSON.parse(fs.readFileSync(STORE_PATH, 'utf8'));
+      if (!data.chat_logs) data.chat_logs = [];
+      if (!data.ai_notes) data.ai_notes = [];
       return data;
     } catch (e) {
       console.error('[DB] Error reading store.json, reinitializing from seed:', e.message);
@@ -57,6 +64,8 @@ function loadLocalStore() {
         scholarships: seed.scholarships || [],
         site_content: seed.site_content || [],
         leads: [],
+        chat_logs: [],
+        ai_notes: [],
         content_documents: [],
         audit_logs: [],
         admins: [
@@ -532,19 +541,19 @@ export const db = {
   async saveLead(leadData) {
     const lead = {
       id: leadData.id || 'lead-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6),
-      name: leadData.name || '',
+      name: leadData.name || leadData.fname || '',
       email: leadData.email || null,
       phone: leadData.phone || '',
       city: leadData.city || null,
-      pref: leadData.pref || 'tg',
+      pref: leadData.pref || leadData.contact_pref || 'tg',
       language: leadData.language || 'en',
-      level: leadData.level || null,
+      level: leadData.level || leadData.edu_level || leadData.edu || null,
       want: leadData.want || null,
       field: leadData.field || null,
-      intake: leadData.intake || null,
-      countries: leadData.countries || [],
-      scholarship: leadData.scholarship || null,
-      answers: leadData.answers || {},
+      intake: leadData.intake || leadData.when || null,
+      countries: leadData.countries || leadData.destinations || [],
+      scholarship: leadData.scholarship || leadData.scholarship_id || null,
+      answers: leadData.answers || leadData,
       result: leadData.result || [],
       summary: leadData.summary || '',
       consent: Boolean(leadData.consent),
@@ -671,13 +680,30 @@ export const db = {
 
     const leadStats = {
       total: leads.length,
-      new: leads.filter(l => l.status === 'new').length
+      new: leads.filter(l => l.status === 'new').length,
+      unsynced: leads.filter(l => !l.crm_case_id).length
+    };
+
+    const chatLogs = await this.getChatLogs({ limit: 1000 });
+    const aiNotes = await this.getAiNotes();
+
+    const chatStats = {
+      total: chatLogs.length,
+      flagged: chatLogs.filter(c => c.flagged).length,
+      unreviewed: chatLogs.filter(c => !c.reviewed).length
+    };
+
+    const noteStats = {
+      total: aiNotes.length,
+      active: aiNotes.filter(n => n.active).length
     };
 
     return {
       countries: countryStats,
       scholarships: scholarshipStats,
       leads: leadStats,
+      chat: chatStats,
+      notes: noteStats,
       isSupabaseConnected: Boolean(supabase)
     };
   },
@@ -706,5 +732,184 @@ export const db = {
     store.admins.push(admin);
     saveLocalStore(store);
     return admin;
+  },
+
+  // ---------------- CHAT LOGS ----------------
+
+  async saveChatLog(logData) {
+    const record = {
+      id: Date.now() + Math.floor(Math.random() * 1000),
+      created_at: new Date().toISOString(),
+      session: logData.session || 'unknown',
+      lang: logData.lang || 'en',
+      question: logData.question || '',
+      answer: logData.answer || '',
+      model: logData.model || 'gemini-flash-latest',
+      status: logData.status || 'ok',
+      handoff: Boolean(logData.handoff),
+      flagged: Boolean(logData.flagged),
+      flag_note: logData.flag_note || null,
+      reviewed: Boolean(logData.reviewed),
+      reviewed_by: logData.reviewed_by || null,
+      page: logData.page || '/'
+    };
+
+    const store = loadLocalStore();
+    store.chat_logs.unshift(record);
+    if (store.chat_logs.length > 2000) store.chat_logs.pop();
+    saveLocalStore(store);
+
+    if (supabase) {
+      try {
+        await supabase.from('chat_logs').insert(record);
+      } catch (err) {
+        // Quiet fallback
+      }
+    }
+    return record;
+  },
+
+  async getChatLogs({ session, lang, flagged, reviewed, limit = 100, offset = 0 } = {}) {
+    if (supabase) {
+      try {
+        let query = supabase.from('chat_logs').select('*').order('created_at', { ascending: false });
+        if (session) query = query.eq('session', session);
+        if (lang) query = query.eq('lang', lang);
+        if (typeof flagged === 'boolean') query = query.eq('flagged', flagged);
+        if (typeof reviewed === 'boolean') query = query.eq('reviewed', reviewed);
+        query = query.range(offset, offset + limit - 1);
+        const { data, error } = await query;
+        if (!error && data) return data;
+      } catch (err) {
+        // Fallback to local store
+      }
+    }
+
+    const store = loadLocalStore();
+    let logs = [...store.chat_logs];
+    if (session) logs = logs.filter(l => l.session === session);
+    if (lang) logs = logs.filter(l => l.lang === lang);
+    if (typeof flagged === 'boolean') logs = logs.filter(l => l.flagged === flagged);
+    if (typeof reviewed === 'boolean') logs = logs.filter(l => l.reviewed === reviewed);
+    return logs.slice(offset, offset + limit);
+  },
+
+  async updateChatLog(id, updates) {
+    const numId = Number(id);
+    const store = loadLocalStore();
+    const idx = store.chat_logs.findIndex(l => l.id === numId || l.id === id);
+    if (idx === -1) throw new Error('Chat log not found');
+
+    const updated = {
+      ...store.chat_logs[idx],
+      ...updates,
+      updated_at: new Date().toISOString()
+    };
+    store.chat_logs[idx] = updated;
+    saveLocalStore(store);
+
+    if (supabase) {
+      try {
+        await supabase.from('chat_logs').update(updates).eq('id', id);
+      } catch (err) {
+        // Quiet fallback
+      }
+    }
+    return updated;
+  },
+
+  // ---------------- AI KNOWLEDGE NOTES ----------------
+
+  async getAiNotes({ activeOnly = false } = {}) {
+    if (supabase) {
+      try {
+        let query = supabase.from('ai_notes').select('*').order('id', { ascending: true });
+        if (activeOnly) query = query.eq('active', true);
+        const { data, error } = await query;
+        if (!error && data) return data;
+      } catch (err) {
+        // Fallback
+      }
+    }
+
+    const store = loadLocalStore();
+    let notes = [...store.ai_notes];
+    if (activeOnly) notes = notes.filter(n => n.active);
+    return notes;
+  },
+
+  async getAiNoteById(id) {
+    const numId = Number(id);
+    const store = loadLocalStore();
+    return store.ai_notes.find(n => n.id === numId || n.id === id) || null;
+  },
+
+  async saveAiNote({ title, body, active = true, source = 'Advisor' }) {
+    const store = loadLocalStore();
+    const nextId = store.ai_notes.length ? Math.max(...store.ai_notes.map(n => Number(n.id) || 0)) + 1 : 1;
+    const note = {
+      id: nextId,
+      title: title.trim(),
+      body: body.trim(),
+      active: Boolean(active),
+      source: source || 'Advisor',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+
+    store.ai_notes.push(note);
+    saveLocalStore(store);
+
+    if (supabase) {
+      try {
+        await supabase.from('ai_notes').insert(note);
+      } catch (err) {
+        // Quiet fallback
+      }
+    }
+    return note;
+  },
+
+  async updateAiNote(id, updates) {
+    const numId = Number(id);
+    const store = loadLocalStore();
+    const idx = store.ai_notes.findIndex(n => n.id === numId || n.id === id);
+    if (idx === -1) throw new Error('AI note not found');
+
+    const updated = {
+      ...store.ai_notes[idx],
+      ...updates,
+      updated_at: new Date().toISOString()
+    };
+    store.ai_notes[idx] = updated;
+    saveLocalStore(store);
+
+    if (supabase) {
+      try {
+        await supabase.from('ai_notes').update(updates).eq('id', id);
+      } catch (err) {
+        // Quiet fallback
+      }
+    }
+    return updated;
+  },
+
+  async deleteAiNote(id) {
+    const numId = Number(id);
+    const store = loadLocalStore();
+    const initialLen = store.ai_notes.length;
+    store.ai_notes = store.ai_notes.filter(n => n.id !== numId && n.id !== id);
+    if (store.ai_notes.length === initialLen) throw new Error('AI note not found');
+
+    saveLocalStore(store);
+
+    if (supabase) {
+      try {
+        await supabase.from('ai_notes').delete().eq('id', id);
+      } catch (err) {
+        // Quiet fallback
+      }
+    }
+    return { success: true };
   }
 };
