@@ -395,6 +395,8 @@ async function runAllTests() {
 
   } catch (err) {
     console.error('\n❌ Test execution failed with error:', err.message);
+    console.error(err.stack);
+    if (err.cause) console.error('Cause:', err.cause);
     process.exitCode = 1;
   } finally {
     if (server) {

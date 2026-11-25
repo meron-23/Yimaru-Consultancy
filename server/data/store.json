@@ -3030,6 +3030,285 @@
       "created_at": "2026-11-24T10:37:16.241Z",
       "updated_at": "2026-11-24T10:37:16.241Z",
       "created_by": "admin-1"
+    },
+    {
+      "id": "ireland-test-1795519464401",
+      "data": {
+        "id": "ireland-test-1795519464401",
+        "f": "ie",
+        "reg": "eu",
+        "code": "IRE",
+        "name": [
+          "Ireland",
+          "Ireland (በአማርኛ)",
+          "Ireland (Afaan Oromoo)",
+          "Ireland (ትግርኛ)"
+        ],
+        "tag": [
+          "High quality education and vibrant international community in Ireland",
+          "በIreland ጥራት ያለው ትምህርት እና ተመጣጣኝ ወጪ",
+          "Barnoota qulqullina qabu fi baasii madaalawaa Ireland keessatti",
+          "ጽሬት ዘለዎ ትምህርትን ምቹእ መነባብሮን ኣብ Ireland"
+        ],
+        "tu": "€9",
+        "li": "expenses: €800–1",
+        "en": "6",
+        "wk": [
+          "Up to 20 hours a week during study",
+          "በትምህርት ወቅት በሳምንት እስከ 20 ሰዓት",
+          "Yeroo barnootaa torbanitti hanga sa'a 20",
+          "ኣብ ግዜ ትምህርቲ ኣብ ሰሙን ክሳብ 20 ሰዓት"
+        ],
+        "desc": [
+          "Ireland offers accredited universities and attractive post-study opportunities for Ethiopian students.",
+          "Ireland ለኢትዮጵያውያን ተማሪዎች እውቅና ያላቸው ዩኒቨርሲቲዎችን እና ከምረቃ በኋላ የስራ እድሎችን ይሰጣል።",
+          "Ireland barattoota Itoophiyaaf yuunivarsiitiiwwan beekamoo fi carraa hojii eebba boodaa kenna.",
+          "Ireland ንተማሃሮ ኢትዮጵያ ፍሉጣት ዩኒቨርሲቲታትን ድሕሪ ምምራቕ ናይ ስራሕ ዕድላትን ይህብ።"
+        ],
+        "facts": {
+          "tu": "€9,000–25,000/yr depending on institution and program.",
+          "li": "€800–1,200/mo.",
+          "in": "September · February",
+          "pr": "4–8 weeks",
+          "la": "English & National Language"
+        },
+        "fields": [
+          "Engineering",
+          "Computer Science & IT",
+          "Business & Management",
+          "Health Sciences"
+        ],
+        "unis": [
+          "National University",
+          "Technical University",
+          "State University"
+        ],
+        "visa": "National Student Visa (Type D)",
+        "steps": [
+          "Get admission letter from an accredited university",
+          "Prepare financial evidence and proof of accommodation",
+          "Authenticate educational certificates at Ministry of Foreign Affairs",
+          "Submit student visa application to the Embassy"
+        ],
+        "work": [
+          "Students are permitted to work part-time during the semester and full-time in vacations.",
+          "ተማሪዎች በትምህርት ጊዜ በትርፍ ሰዓት፣ በእረፍት ወቅት ደግሞ በሙሉ ጊዜ እንዲሰሩ ይፈቀድላቸዋል።",
+          "Barattoonni yeroo barnootaa yeroo gartokkee, yeroo boqonnaa ammoo yeroo guutuu akka hojjetan ni hayyamama.",
+          "ተማሃሮ ኣብ ግዜ ትምህርቲ ናይ ትርፊ ግዜ፣ ኣብ ዕረፍቲ ድማ ምሉእ ግዜ ክሰርሑ ፍቑድ እዩ።"
+        ],
+        "sch": [],
+        "tips": [
+          [
+            "Submit applications early to secure student housing and visa interview dates.",
+            "የተማሪዎች መኖሪያ እና የቪዛ ቀጠሮ ለማግኘት ማመልከቻዎችን ቀድመው ያስገቡ።",
+            "Mana jireenyaa barattootaa fi beellama viizaa argachuuf daftee iyyadhu.",
+            "መንበሪ ተማሃሮን ቆጸራ ቪዛን ንምርካብ ምምልካትካ ቀልጢፍካ ኣቕርብ።"
+          ]
+        ],
+        "min": {
+          "ielts": 6,
+          "budget": 8000
+        },
+        "geo": [
+          20,
+          50
+        ]
+      },
+      "featured": false,
+      "sort": 32,
+      "status": "published",
+      "published": true,
+      "source_url": "",
+      "source_metadata": {},
+      "created_at": "2026-11-24T11:24:24.403Z",
+      "updated_at": "2026-11-24T11:24:24.403Z",
+      "created_by": "admin-1"
+    },
+    {
+      "id": "ireland-test-1795593949548",
+      "data": {
+        "id": "ireland-test-1795593949548",
+        "f": "ie",
+        "reg": "eu",
+        "code": "IRE",
+        "name": [
+          "Ireland",
+          "Ireland (በአማርኛ)",
+          "Ireland (Afaan Oromoo)",
+          "Ireland (ትግርኛ)"
+        ],
+        "tag": [
+          "High quality education and vibrant international community in Ireland",
+          "በIreland ጥራት ያለው ትምህርት እና ተመጣጣኝ ወጪ",
+          "Barnoota qulqullina qabu fi baasii madaalawaa Ireland keessatti",
+          "ጽሬት ዘለዎ ትምህርትን ምቹእ መነባብሮን ኣብ Ireland"
+        ],
+        "tu": "€9",
+        "li": "expenses: €800–1",
+        "en": "6",
+        "wk": [
+          "Up to 20 hours a week during study",
+          "በትምህርት ወቅት በሳምንት እስከ 20 ሰዓት",
+          "Yeroo barnootaa torbanitti hanga sa'a 20",
+          "ኣብ ግዜ ትምህርቲ ኣብ ሰሙን ክሳብ 20 ሰዓት"
+        ],
+        "desc": [
+          "Ireland offers accredited universities and attractive post-study opportunities for Ethiopian students.",
+          "Ireland ለኢትዮጵያውያን ተማሪዎች እውቅና ያላቸው ዩኒቨርሲቲዎችን እና ከምረቃ በኋላ የስራ እድሎችን ይሰጣል።",
+          "Ireland barattoota Itoophiyaaf yuunivarsiitiiwwan beekamoo fi carraa hojii eebba boodaa kenna.",
+          "Ireland ንተማሃሮ ኢትዮጵያ ፍሉጣት ዩኒቨርሲቲታትን ድሕሪ ምምራቕ ናይ ስራሕ ዕድላትን ይህብ።"
+        ],
+        "facts": {
+          "tu": "€9,000–25,000/yr depending on institution and program.",
+          "li": "€800–1,200/mo.",
+          "in": "September · February",
+          "pr": "4–8 weeks",
+          "la": "English & National Language"
+        },
+        "fields": [
+          "Engineering",
+          "Computer Science & IT",
+          "Business & Management",
+          "Health Sciences"
+        ],
+        "unis": [
+          "National University",
+          "Technical University",
+          "State University"
+        ],
+        "visa": "National Student Visa (Type D)",
+        "steps": [
+          "Get admission letter from an accredited university",
+          "Prepare financial evidence and proof of accommodation",
+          "Authenticate educational certificates at Ministry of Foreign Affairs",
+          "Submit student visa application to the Embassy"
+        ],
+        "work": [
+          "Students are permitted to work part-time during the semester and full-time in vacations.",
+          "ተማሪዎች በትምህርት ጊዜ በትርፍ ሰዓት፣ በእረፍት ወቅት ደግሞ በሙሉ ጊዜ እንዲሰሩ ይፈቀድላቸዋል።",
+          "Barattoonni yeroo barnootaa yeroo gartokkee, yeroo boqonnaa ammoo yeroo guutuu akka hojjetan ni hayyamama.",
+          "ተማሃሮ ኣብ ግዜ ትምህርቲ ናይ ትርፊ ግዜ፣ ኣብ ዕረፍቲ ድማ ምሉእ ግዜ ክሰርሑ ፍቑድ እዩ።"
+        ],
+        "sch": [],
+        "tips": [
+          [
+            "Submit applications early to secure student housing and visa interview dates.",
+            "የተማሪዎች መኖሪያ እና የቪዛ ቀጠሮ ለማግኘት ማመልከቻዎችን ቀድመው ያስገቡ።",
+            "Mana jireenyaa barattootaa fi beellama viizaa argachuuf daftee iyyadhu.",
+            "መንበሪ ተማሃሮን ቆጸራ ቪዛን ንምርካብ ምምልካትካ ቀልጢፍካ ኣቕርብ።"
+          ]
+        ],
+        "min": {
+          "ielts": 6,
+          "budget": 8000
+        },
+        "geo": [
+          20,
+          50
+        ]
+      },
+      "featured": false,
+      "sort": 33,
+      "status": "published",
+      "published": true,
+      "source_url": "",
+      "source_metadata": {},
+      "created_at": "2026-11-25T08:05:49.551Z",
+      "updated_at": "2026-11-25T08:05:49.551Z",
+      "created_by": "admin-1"
+    },
+    {
+      "id": "ireland-test-1795595435140",
+      "data": {
+        "id": "ireland-test-1795595435140",
+        "f": "ie",
+        "reg": "eu",
+        "code": "IRE",
+        "name": [
+          "Ireland",
+          "Ireland (በአማርኛ)",
+          "Ireland (Afaan Oromoo)",
+          "Ireland (ትግርኛ)"
+        ],
+        "tag": [
+          "High quality education and vibrant international community in Ireland",
+          "በIreland ጥራት ያለው ትምህርት እና ተመጣጣኝ ወጪ",
+          "Barnoota qulqullina qabu fi baasii madaalawaa Ireland keessatti",
+          "ጽሬት ዘለዎ ትምህርትን ምቹእ መነባብሮን ኣብ Ireland"
+        ],
+        "tu": "€9",
+        "li": "expenses: €800–1",
+        "en": "6",
+        "wk": [
+          "Up to 20 hours a week during study",
+          "በትምህርት ወቅት በሳምንት እስከ 20 ሰዓት",
+          "Yeroo barnootaa torbanitti hanga sa'a 20",
+          "ኣብ ግዜ ትምህርቲ ኣብ ሰሙን ክሳብ 20 ሰዓት"
+        ],
+        "desc": [
+          "Ireland offers accredited universities and attractive post-study opportunities for Ethiopian students.",
+          "Ireland ለኢትዮጵያውያን ተማሪዎች እውቅና ያላቸው ዩኒቨርሲቲዎችን እና ከምረቃ በኋላ የስራ እድሎችን ይሰጣል።",
+          "Ireland barattoota Itoophiyaaf yuunivarsiitiiwwan beekamoo fi carraa hojii eebba boodaa kenna.",
+          "Ireland ንተማሃሮ ኢትዮጵያ ፍሉጣት ዩኒቨርሲቲታትን ድሕሪ ምምራቕ ናይ ስራሕ ዕድላትን ይህብ።"
+        ],
+        "facts": {
+          "tu": "€9,000–25,000/yr depending on institution and program.",
+          "li": "€800–1,200/mo.",
+          "in": "September · February",
+          "pr": "4–8 weeks",
+          "la": "English & National Language"
+        },
+        "fields": [
+          "Engineering",
+          "Computer Science & IT",
+          "Business & Management",
+          "Health Sciences"
+        ],
+        "unis": [
+          "National University",
+          "Technical University",
+          "State University"
+        ],
+        "visa": "National Student Visa (Type D)",
+        "steps": [
+          "Get admission letter from an accredited university",
+          "Prepare financial evidence and proof of accommodation",
+          "Authenticate educational certificates at Ministry of Foreign Affairs",
+          "Submit student visa application to the Embassy"
+        ],
+        "work": [
+          "Students are permitted to work part-time during the semester and full-time in vacations.",
+          "ተማሪዎች በትምህርት ጊዜ በትርፍ ሰዓት፣ በእረፍት ወቅት ደግሞ በሙሉ ጊዜ እንዲሰሩ ይፈቀድላቸዋል።",
+          "Barattoonni yeroo barnootaa yeroo gartokkee, yeroo boqonnaa ammoo yeroo guutuu akka hojjetan ni hayyamama.",
+          "ተማሃሮ ኣብ ግዜ ትምህርቲ ናይ ትርፊ ግዜ፣ ኣብ ዕረፍቲ ድማ ምሉእ ግዜ ክሰርሑ ፍቑድ እዩ።"
+        ],
+        "sch": [],
+        "tips": [
+          [
+            "Submit applications early to secure student housing and visa interview dates.",
+            "የተማሪዎች መኖሪያ እና የቪዛ ቀጠሮ ለማግኘት ማመልከቻዎችን ቀድመው ያስገቡ።",
+            "Mana jireenyaa barattootaa fi beellama viizaa argachuuf daftee iyyadhu.",
+            "መንበሪ ተማሃሮን ቆጸራ ቪዛን ንምርካብ ምምልካትካ ቀልጢፍካ ኣቕርብ።"
+          ]
+        ],
+        "min": {
+          "ielts": 6,
+          "budget": 8000
+        },
+        "geo": [
+          20,
+          50
+        ]
+      },
+      "featured": false,
+      "sort": 34,
+      "status": "published",
+      "published": true,
+      "source_url": "",
+      "source_metadata": {},
+      "created_at": "2026-11-25T08:30:35.143Z",
+      "updated_at": "2026-11-25T08:30:35.143Z",
+      "created_by": "admin-1"
     }
   ],
   "scholarships": [
@@ -5304,6 +5583,231 @@
       "created_at": "2026-11-24T10:37:15.735Z",
       "updated_at": "2026-11-24T10:37:15.831Z",
       "created_by": "admin-1"
+    },
+    {
+      "id": "test-turkiye-scholarship-1795519463896",
+      "data": {
+        "id": "test-turkiye-scholarship-1795519463896",
+        "name": "Scholarships 2026 / 2027",
+        "fl": [
+          "eu"
+        ],
+        "code": "MULTI",
+        "lv": [
+          "ma",
+          "phd"
+        ],
+        "cov": "full",
+        "mo": [
+          10,
+          11,
+          12,
+          1
+        ],
+        "inc": [
+          "tuition",
+          "stipend",
+          "housing"
+        ],
+        "covers": [
+          "Updated 100% Tuition Waiver and Living Allowance",
+          "የትምህርት ክፍያ ሽፋን እና ወርሃዊ የኑሮ አበል",
+          "Kaffaltii barnootaa fi qarshii jireenyaa ji'aa",
+          "ናይ ትምህርቲ ክፍሊት ሽፍንን ወርሓዊ ናይ መነባብሮ ኣበልን"
+        ],
+        "win": [
+          "Usually open October to January annually",
+          "ብዙውን ጊዜ በየዓመቱ ከጥቅምት እስከ ጥር ክፍት ነው",
+          "Yeroo baay'ee waggaatti Onkololeessa hanga Amajjii banaadha",
+          "መብዛሕትኡ ግዜ ኣብ ዓመት ካብ ጥቅምቲ ክሳብ ጥሪ ክፉት እዩ"
+        ],
+        "who": [
+          [
+            "Bachelor degree with strong academic standing",
+            "ጠንካራ የትምህርት ውጤት ያለው የመጀመሪያ ዲግሪ",
+            "Digrii jalqabaa qabxii barnootaa cimaa qabu",
+            "ሓያል ውጽኢት ትምህርቲ ዘለዎ ቀዳማይ ዲግሪ"
+          ],
+          [
+            "Proficiency in English (IELTS, TOEFL or Duolingo)",
+            "በእንግሊዝኛ ቋንቋ ብቃት (IELTS፣ TOEFL ወይም Duolingo)",
+            "Dandeettii afaan Ingiliffaa (IELTS, TOEFL ykn Duolingo)",
+            "ብቕዓት ቋንቋ እንግሊዝኛ (IELTS፣ TOEFL ወይ Duolingo)"
+          ],
+          [
+            "Commitment to return and contribute to community development",
+            "ትምህርትን አጠናቆ ወደ ሀገር በመመለስ ለማህበረሰብ ልማት አስተዋጽኦ የማድረግ ቁርጠኝነት",
+            "Barnoota xumuruun gara biyyaatti deebi'uuf kutannoo qabaachuu",
+            "ትምህርቲ ወዲእካ ናብ ሃገርካ ንምምላስን ንማሕበረሰብ ንምግልጋልን ዘሎ ተወፋይነት"
+          ]
+        ],
+        "note": [
+          "Early submission and a compelling personal statement significantly increase selection probability.",
+          "ቀድሞ ማመልከትና ጠንካራ የፍላጎት ደብዳቤ (Statement of Purpose) የማለፍ እድልን በከፍተኛ ሁኔታ ይጨምራል።",
+          "Dafanii iyyachuu fi xalayaa kaka'umsaa cimaa qabaachuun carraa kee ni dabala.",
+          "ቀልጢፍካ ምምልካትን ሓያል ደብዳቤ ድሌትን ምድላው ናይ ምሕራይ ዕድልካ ብዓቢኡ ይውስኽ።"
+        ],
+        "url": "https://www.turkiyeburslari.gov.tr"
+      },
+      "featured": false,
+      "sort": 32,
+      "status": "archived",
+      "published": false,
+      "source_url": "",
+      "source_metadata": {},
+      "created_at": "2026-11-24T11:24:23.905Z",
+      "updated_at": "2026-11-24T11:24:24.006Z",
+      "created_by": "admin-1"
+    },
+    {
+      "id": "test-turkiye-scholarship-1795593948910",
+      "data": {
+        "id": "test-turkiye-scholarship-1795593948910",
+        "name": "Scholarships 2026 / 2027",
+        "fl": [
+          "eu"
+        ],
+        "code": "MULTI",
+        "lv": [
+          "ma",
+          "phd"
+        ],
+        "cov": "full",
+        "mo": [
+          10,
+          11,
+          12,
+          1
+        ],
+        "inc": [
+          "tuition",
+          "stipend",
+          "housing"
+        ],
+        "covers": [
+          "Updated 100% Tuition Waiver and Living Allowance",
+          "የትምህርት ክፍያ ሽፋን እና ወርሃዊ የኑሮ አበል",
+          "Kaffaltii barnootaa fi qarshii jireenyaa ji'aa",
+          "ናይ ትምህርቲ ክፍሊት ሽፍንን ወርሓዊ ናይ መነባብሮ ኣበልን"
+        ],
+        "win": [
+          "Usually open October to January annually",
+          "ብዙውን ጊዜ በየዓመቱ ከጥቅምት እስከ ጥር ክፍት ነው",
+          "Yeroo baay'ee waggaatti Onkololeessa hanga Amajjii banaadha",
+          "መብዛሕትኡ ግዜ ኣብ ዓመት ካብ ጥቅምቲ ክሳብ ጥሪ ክፉት እዩ"
+        ],
+        "who": [
+          [
+            "Bachelor degree with strong academic standing",
+            "ጠንካራ የትምህርት ውጤት ያለው የመጀመሪያ ዲግሪ",
+            "Digrii jalqabaa qabxii barnootaa cimaa qabu",
+            "ሓያል ውጽኢት ትምህርቲ ዘለዎ ቀዳማይ ዲግሪ"
+          ],
+          [
+            "Proficiency in English (IELTS, TOEFL or Duolingo)",
+            "በእንግሊዝኛ ቋንቋ ብቃት (IELTS፣ TOEFL ወይም Duolingo)",
+            "Dandeettii afaan Ingiliffaa (IELTS, TOEFL ykn Duolingo)",
+            "ብቕዓት ቋንቋ እንግሊዝኛ (IELTS፣ TOEFL ወይ Duolingo)"
+          ],
+          [
+            "Commitment to return and contribute to community development",
+            "ትምህርትን አጠናቆ ወደ ሀገር በመመለስ ለማህበረሰብ ልማት አስተዋጽኦ የማድረግ ቁርጠኝነት",
+            "Barnoota xumuruun gara biyyaatti deebi'uuf kutannoo qabaachuu",
+            "ትምህርቲ ወዲእካ ናብ ሃገርካ ንምምላስን ንማሕበረሰብ ንምግልጋልን ዘሎ ተወፋይነት"
+          ]
+        ],
+        "note": [
+          "Early submission and a compelling personal statement significantly increase selection probability.",
+          "ቀድሞ ማመልከትና ጠንካራ የፍላጎት ደብዳቤ (Statement of Purpose) የማለፍ እድልን በከፍተኛ ሁኔታ ይጨምራል።",
+          "Dafanii iyyachuu fi xalayaa kaka'umsaa cimaa qabaachuun carraa kee ni dabala.",
+          "ቀልጢፍካ ምምልካትን ሓያል ደብዳቤ ድሌትን ምድላው ናይ ምሕራይ ዕድልካ ብዓቢኡ ይውስኽ።"
+        ],
+        "url": "https://www.turkiyeburslari.gov.tr"
+      },
+      "featured": false,
+      "sort": 33,
+      "status": "archived",
+      "published": false,
+      "source_url": "",
+      "source_metadata": {},
+      "created_at": "2026-11-25T08:05:48.914Z",
+      "updated_at": "2026-11-25T08:05:49.038Z",
+      "created_by": "admin-1"
+    },
+    {
+      "id": "test-turkiye-scholarship-1795595434643",
+      "data": {
+        "id": "test-turkiye-scholarship-1795595434643",
+        "name": "Scholarships 2026 / 2027",
+        "fl": [
+          "eu"
+        ],
+        "code": "MULTI",
+        "lv": [
+          "ma",
+          "phd"
+        ],
+        "cov": "full",
+        "mo": [
+          10,
+          11,
+          12,
+          1
+        ],
+        "inc": [
+          "tuition",
+          "stipend",
+          "housing"
+        ],
+        "covers": [
+          "Updated 100% Tuition Waiver and Living Allowance",
+          "የትምህርት ክፍያ ሽፋን እና ወርሃዊ የኑሮ አበል",
+          "Kaffaltii barnootaa fi qarshii jireenyaa ji'aa",
+          "ናይ ትምህርቲ ክፍሊት ሽፍንን ወርሓዊ ናይ መነባብሮ ኣበልን"
+        ],
+        "win": [
+          "Usually open October to January annually",
+          "ብዙውን ጊዜ በየዓመቱ ከጥቅምት እስከ ጥር ክፍት ነው",
+          "Yeroo baay'ee waggaatti Onkololeessa hanga Amajjii banaadha",
+          "መብዛሕትኡ ግዜ ኣብ ዓመት ካብ ጥቅምቲ ክሳብ ጥሪ ክፉት እዩ"
+        ],
+        "who": [
+          [
+            "Bachelor degree with strong academic standing",
+            "ጠንካራ የትምህርት ውጤት ያለው የመጀመሪያ ዲግሪ",
+            "Digrii jalqabaa qabxii barnootaa cimaa qabu",
+            "ሓያል ውጽኢት ትምህርቲ ዘለዎ ቀዳማይ ዲግሪ"
+          ],
+          [
+            "Proficiency in English (IELTS, TOEFL or Duolingo)",
+            "በእንግሊዝኛ ቋንቋ ብቃት (IELTS፣ TOEFL ወይም Duolingo)",
+            "Dandeettii afaan Ingiliffaa (IELTS, TOEFL ykn Duolingo)",
+            "ብቕዓት ቋንቋ እንግሊዝኛ (IELTS፣ TOEFL ወይ Duolingo)"
+          ],
+          [
+            "Commitment to return and contribute to community development",
+            "ትምህርትን አጠናቆ ወደ ሀገር በመመለስ ለማህበረሰብ ልማት አስተዋጽኦ የማድረግ ቁርጠኝነት",
+            "Barnoota xumuruun gara biyyaatti deebi'uuf kutannoo qabaachuu",
+            "ትምህርቲ ወዲእካ ናብ ሃገርካ ንምምላስን ንማሕበረሰብ ንምግልጋልን ዘሎ ተወፋይነት"
+          ]
+        ],
+        "note": [
+          "Early submission and a compelling personal statement significantly increase selection probability.",
+          "ቀድሞ ማመልከትና ጠንካራ የፍላጎት ደብዳቤ (Statement of Purpose) የማለፍ እድልን በከፍተኛ ሁኔታ ይጨምራል።",
+          "Dafanii iyyachuu fi xalayaa kaka'umsaa cimaa qabaachuun carraa kee ni dabala.",
+          "ቀልጢፍካ ምምልካትን ሓያል ደብዳቤ ድሌትን ምድላው ናይ ምሕራይ ዕድልካ ብዓቢኡ ይውስኽ።"
+        ],
+        "url": "https://www.turkiyeburslari.gov.tr"
+      },
+      "featured": false,
+      "sort": 34,
+      "status": "archived",
+      "published": false,
+      "source_url": "",
+      "source_metadata": {},
+      "created_at": "2026-11-25T08:30:34.649Z",
+      "updated_at": "2026-11-25T08:30:34.771Z",
+      "created_by": "admin-1"
     }
   ],
   "site_content": [
@@ -5642,6 +6146,140 @@
     }
   ],
   "leads": [
+    {
+      "id": "lead-1795595434821-yzxp3d",
+      "name": "Abebe Kebede",
+      "email": "abebe.test@gmail.com",
+      "phone": "+251 911 234567",
+      "city": "Addis Ababa",
+      "pref": "telegram",
+      "language": "am",
+      "level": "bachelor",
+      "want": null,
+      "field": "Computer Science",
+      "intake": "fall_2026",
+      "countries": [
+        "poland",
+        "germany"
+      ],
+      "scholarship": "daad",
+      "answers": {
+        "name": "Abebe Kebede",
+        "phone": "+251 911 234567",
+        "email": "abebe.test@gmail.com",
+        "city": "Addis Ababa",
+        "pref": "telegram",
+        "language": "am",
+        "level": "bachelor",
+        "field": "Computer Science",
+        "intake": "fall_2026",
+        "countries": [
+          "poland",
+          "germany"
+        ],
+        "scholarship": "daad",
+        "summary": "Strong academic background in engineering with GPA 3.8",
+        "consent": true
+      },
+      "result": [],
+      "summary": "Strong academic background in engineering with GPA 3.8",
+      "consent": true,
+      "source": "website",
+      "status": "new",
+      "created_at": "2026-11-25T08:30:34.821Z",
+      "updated_at": "2026-11-25T08:30:34.821Z",
+      "crm_case_id": "YIM-2026-MOCK",
+      "crm_synced_at": "2026-11-25T08:30:34.836Z"
+    },
+    {
+      "id": "lead-1795593949089-2efv7z",
+      "name": "Abebe Kebede",
+      "email": "abebe.test@gmail.com",
+      "phone": "+251 911 234567",
+      "city": "Addis Ababa",
+      "pref": "telegram",
+      "language": "am",
+      "level": "bachelor",
+      "want": null,
+      "field": "Computer Science",
+      "intake": "fall_2026",
+      "countries": [
+        "poland",
+        "germany"
+      ],
+      "scholarship": "daad",
+      "answers": {
+        "name": "Abebe Kebede",
+        "phone": "+251 911 234567",
+        "email": "abebe.test@gmail.com",
+        "city": "Addis Ababa",
+        "pref": "telegram",
+        "language": "am",
+        "level": "bachelor",
+        "field": "Computer Science",
+        "intake": "fall_2026",
+        "countries": [
+          "poland",
+          "germany"
+        ],
+        "scholarship": "daad",
+        "summary": "Strong academic background in engineering with GPA 3.8",
+        "consent": true
+      },
+      "result": [],
+      "summary": "Strong academic background in engineering with GPA 3.8",
+      "consent": true,
+      "source": "website",
+      "status": "new",
+      "created_at": "2026-11-25T08:05:49.089Z",
+      "updated_at": "2026-11-25T08:05:49.089Z",
+      "crm_case_id": "YIM-2026-MOCK",
+      "crm_synced_at": "2026-11-25T08:05:49.105Z"
+    },
+    {
+      "id": "lead-1795519464045-8jyt9w",
+      "name": "Abebe Kebede",
+      "email": "abebe.test@gmail.com",
+      "phone": "+251 911 234567",
+      "city": "Addis Ababa",
+      "pref": "telegram",
+      "language": "am",
+      "level": "bachelor",
+      "want": null,
+      "field": "Computer Science",
+      "intake": "fall_2026",
+      "countries": [
+        "poland",
+        "germany"
+      ],
+      "scholarship": "daad",
+      "answers": {
+        "name": "Abebe Kebede",
+        "phone": "+251 911 234567",
+        "email": "abebe.test@gmail.com",
+        "city": "Addis Ababa",
+        "pref": "telegram",
+        "language": "am",
+        "level": "bachelor",
+        "field": "Computer Science",
+        "intake": "fall_2026",
+        "countries": [
+          "poland",
+          "germany"
+        ],
+        "scholarship": "daad",
+        "summary": "Strong academic background in engineering with GPA 3.8",
+        "consent": true
+      },
+      "result": [],
+      "summary": "Strong academic background in engineering with GPA 3.8",
+      "consent": true,
+      "source": "website",
+      "status": "new",
+      "created_at": "2026-11-24T11:24:24.045Z",
+      "updated_at": "2026-11-24T11:24:24.045Z",
+      "crm_case_id": "YIM-2026-MOCK"
+    },
     {
       "id": "lead-1795516635863-728onr",
       "name": "Abebe Kebede",
@@ -6412,6 +7050,171 @@
     }
   ],
   "audit_logs": [
+    {
+      "id": "log-1795595435150-tbbz",
+      "user_id": "admin-1",
+      "action": "create",
+      "entity_type": "country",
+      "entity_id": "ireland-test-1795595435140",
+      "changes": {
+        "status": "published"
+      },
+      "created_at": "2026-11-25T08:30:35.150Z"
+    },
+    {
+      "id": "log-1795595434778-xmxf",
+      "user_id": "admin-1",
+      "action": "status_change",
+      "entity_type": "scholarship",
+      "entity_id": "test-turkiye-scholarship-1795595434643",
+      "changes": {
+        "newStatus": "archived"
+      },
+      "created_at": "2026-11-25T08:30:34.778Z"
+    },
+    {
+      "id": "log-1795595434754-404h",
+      "user_id": "admin-1",
+      "action": "update",
+      "entity_type": "scholarship",
+      "entity_id": "test-turkiye-scholarship-1795595434643",
+      "changes": {
+        "status": "published"
+      },
+      "created_at": "2026-11-25T08:30:34.754Z"
+    },
+    {
+      "id": "log-1795595434704-lst0",
+      "user_id": "admin-1",
+      "action": "status_change",
+      "entity_type": "scholarship",
+      "entity_id": "test-turkiye-scholarship-1795595434643",
+      "changes": {
+        "newStatus": "published"
+      },
+      "created_at": "2026-11-25T08:30:34.704Z"
+    },
+    {
+      "id": "log-1795595434662-yfox",
+      "user_id": "admin-1",
+      "action": "create",
+      "entity_type": "scholarship",
+      "entity_id": "test-turkiye-scholarship-1795595434643",
+      "changes": {
+        "status": "draft"
+      },
+      "created_at": "2026-11-25T08:30:34.662Z"
+    },
+    {
+      "id": "log-1795593949562-r7do",
+      "user_id": "admin-1",
+      "action": "create",
+      "entity_type": "country",
+      "entity_id": "ireland-test-1795593949548",
+      "changes": {
+        "status": "published"
+      },
+      "created_at": "2026-11-25T08:05:49.562Z"
+    },
+    {
+      "id": "log-1795593949044-3nm2",
+      "user_id": "admin-1",
+      "action": "status_change",
+      "entity_type": "scholarship",
+      "entity_id": "test-turkiye-scholarship-1795593948910",
+      "changes": {
+        "newStatus": "archived"
+      },
+      "created_at": "2026-11-25T08:05:49.044Z"
+    },
+    {
+      "id": "log-1795593949020-ddz2",
+      "user_id": "admin-1",
+      "action": "update",
+      "entity_type": "scholarship",
+      "entity_id": "test-turkiye-scholarship-1795593948910",
+      "changes": {
+        "status": "published"
+      },
+      "created_at": "2026-11-25T08:05:49.020Z"
+    },
+    {
+      "id": "log-1795593948968-72y5",
+      "user_id": "admin-1",
+      "action": "status_change",
+      "entity_type": "scholarship",
+      "entity_id": "test-turkiye-scholarship-1795593948910",
+      "changes": {
+        "newStatus": "published"
+      },
+      "created_at": "2026-11-25T08:05:48.968Z"
+    },
+    {
+      "id": "log-1795593948923-wnlu",
+      "user_id": "admin-1",
+      "action": "create",
+      "entity_type": "scholarship",
+      "entity_id": "test-turkiye-scholarship-1795593948910",
+      "changes": {
+        "status": "draft"
+      },
+      "created_at": "2026-11-25T08:05:48.923Z"
+    },
+    {
+      "id": "log-1795519464414-t0vp",
+      "user_id": "admin-1",
+      "action": "create",
+      "entity_type": "country",
+      "entity_id": "ireland-test-1795519464401",
+      "changes": {
+        "status": "published"
+      },
+      "created_at": "2026-11-24T11:24:24.414Z"
+    },
+    {
+      "id": "log-1795519464012-kdma",
+      "user_id": "admin-1",
+      "action": "status_change",
+      "entity_type": "scholarship",
+      "entity_id": "test-turkiye-scholarship-1795519463896",
+      "changes": {
+        "newStatus": "archived"
+      },
+      "created_at": "2026-11-24T11:24:24.012Z"
+    },
+    {
+      "id": "log-1795519463992-4tzi",
+      "user_id": "admin-1",
+      "action": "update",
+      "entity_type": "scholarship",
+      "entity_id": "test-turkiye-scholarship-1795519463896",
+      "changes": {
+        "status": "published"
+      },
+      "created_at": "2026-11-24T11:24:23.992Z"
+    },
+    {
+      "id": "log-1795519463956-pwgg",
+      "user_id": "admin-1",
+      "action": "status_change",
+      "entity_type": "scholarship",
+      "entity_id": "test-turkiye-scholarship-1795519463896",
+      "changes": {
+        "newStatus": "published"
+      },
+      "created_at": "2026-11-24T11:24:23.956Z"
+    },
+    {
+      "id": "log-1795519463921-pmvx",
+      "user_id": "admin-1",
+      "action": "create",
+      "entity_type": "scholarship",
+      "entity_id": "test-turkiye-scholarship-1795519463896",
+      "changes": {
+        "status": "draft"
+      },
+      "created_at": "2026-11-24T11:24:23.921Z"
+    },
     {
       "id": "log-1795516636259-53cg",
       "user_id": "admin-1",

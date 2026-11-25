@@ -507,15 +507,24 @@ export const db = {
         if (status && status !== 'all') query = query.eq('status', status);
         const { data, error } = await query;
         if (!error && data) {
+          // Normalize crm_case_id from notes fallback if crm_case_id column is null
+          const normalized = data.map(l => {
+            if (!l.crm_case_id && l.notes && l.notes.includes('[CRM: ')) {
+              const m = l.notes.match(/\[CRM:\s*([^\]]+)\]/);
+              if (m) l.crm_case_id = m[1].trim();
+            }
+            return l;
+          });
+
           if (search) {
             const q = search.toLowerCase();
-            return data.filter(l => 
+            return normalized.filter(l => 
               (l.name && l.name.toLowerCase().includes(q)) ||
               (l.email && l.email.toLowerCase().includes(q)) ||
               (l.phone && l.phone.toLowerCase().includes(q))
             );
           }
-          return data;
+          return normalized;
         }
       } catch (err) {
         console.warn('[DB] Supabase getLeads failed, falling back:', err.message);
@@ -579,14 +588,46 @@ export const db = {
     try {
       const crmRes = await syncLeadToYimaruCrm(lead);
       if (crmRes && crmRes.success && crmRes.caseId) {
-        lead.crm_case_id = crmRes.caseId;
-        saveLocalStore(store);
+        await this.updateLeadCrmCase(lead.id, crmRes.caseId);
       }
     } catch (crmErr) {
       console.warn('[CRM-SYNC] Automatic sync failed:', crmErr.message);
     }
 
     return lead;
+  },
+
+  async updateLeadCrmCase(leadId, caseId) {
+    const store = loadLocalStore();
+    const l = (store.leads || []).find(x => x.id === leadId);
+    const now = new Date().toISOString();
+    if (l) {
+      l.crm_case_id = caseId;
+      l.crm_synced_at = now;
+      saveLocalStore(store);
+    }
+
+    if (supabase) {
+      try {
+        const updateData = {
+          crm_case_id: caseId,
+          crm_synced_at: now
+        };
+        const { error } = await supabase.from('leads').update(updateData).eq('id', leadId);
+        if (error) {
+          // If crm_case_id column doesn't exist yet, save into notes
+          console.warn('[DB] Supabase direct update failed, saving crm_case_id into notes fallback:', error.message);
+          const existingNotes = l?.notes || '';
+          const notesWithCrm = existingNotes ? `${existingNotes}\n[CRM: ${caseId}]` : `[CRM: ${caseId}]`;
+          await supabase.from('leads').update({
+            notes: notesWithCrm,
+            crm_synced_at: now
+          }).eq('id', leadId);
+        }
+      } catch (err) {
+        console.warn('[DB] Supabase updateLeadCrmCase error:', err.message);
+      }
+    }
   },
 
   // ---------------- CONTENT DOCUMENTS & AUDIT ----------------

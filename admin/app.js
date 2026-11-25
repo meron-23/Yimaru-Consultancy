@@ -1016,6 +1016,11 @@ async function saveCurrentReview(newStatus) {
 
     showToast(statusLabels[newStatus] || 'Saved successfully', 'success');
     loadDashboard();
+    if (item.type === 'country') {
+      loadCountries();
+    } else {
+      loadScholarships();
+    }
   } catch (err) {
     showToast('Failed to save: ' + err.message, 'error');
   }

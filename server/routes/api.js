@@ -534,7 +534,7 @@ router.post('/leads/:id/sync-crm', requireAuth, async (req, res) => {
     const syncRes = await syncLeadToYimaruCrm(lead);
 
     if (syncRes.success) {
-      lead.crm_case_id = syncRes.caseId;
+      await db.updateLeadCrmCase(leadId, syncRes.caseId);
       res.json({ success: true, caseId: syncRes.caseId, message: `Synced to Yimaru CRM as case ${syncRes.caseId}` });
     } else {
       res.status(502).json({ error: syncRes.error || 'Failed to sync to Yimaru CRM' });
